@@ -1,0 +1,11 @@
+# Répertoires qui ne seront pas push.
+
+OSSpecs/target/
+
+OSSpecs_tests/target/
+
+# Fichiers qui ne seront pas push.
+
+OSSpecs/Cargo.lock
+
+OSSpecs_tests/Cargo.lock
