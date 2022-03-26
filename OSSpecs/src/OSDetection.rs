@@ -2,6 +2,23 @@
 
 use std::env;
 
+/*
+Alternatively to these functions, you can also use this type of code structure :
+
+
+let machine_kind = if cfg!(unix) {
+  "unix"
+} else if cfg!(windows) {
+  "windows"
+} else {
+  "unknown"
+};
+
+println!("I'm running on a {} machine!", machine_kind);
+
+(copied from https://doc.rust-lang.org/reference/conditional-compilation.html#the-cfg-macro)
+*/
+
 pub fn isLinux() -> bool
 {
 	return env::consts::OS == "linux";

@@ -3,6 +3,7 @@
 extern crate OSSpecs;
 
 use OSSpecs::OSDetection;
+#[cfg(target_os = "windows")]
 use OSSpecs::WindowsCpuInfos;
 
 fn main()
@@ -24,7 +25,7 @@ fn main()
 		println!("We are on an other OS. Please, check the \"OSDetection.rs\" file to see which OS can be detect with this crate.");
 	}
 	
-	let tabProcos = WindowsCpuInfos::getProcessorsInformationsWin32();
+	let tabProcos = WindowsCpuInfos::getProcessorsInformationsWin32().unwrap();
 	
 	println!("{:?}", tabProcos);
 	
