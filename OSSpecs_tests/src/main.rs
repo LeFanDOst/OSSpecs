@@ -14,8 +14,9 @@ fn main()
 	{
 		println!("We are on a Linux Distribution OS.");
 		
-		#[cfg(target_os = "linux")]
-		LinuxCpuInfos::getProcessorsInformationsLinux();
+		let procosInfos = LinuxCpuInfos::getProcessorsInformationsLinux().unwrap();
+		
+		println!("{:?}", procosInfos);
 	}
 	else if OSDetection::isWindows()
 	{

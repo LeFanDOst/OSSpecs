@@ -103,9 +103,7 @@ pub fn getProcessorsInformationsWin32() -> Result<Vec<Win32_Processor>, std::io:
 	
 	let tabProcosRes: Vec<Win32_Processor> = match wmi_con.query() {
 		Ok(tmp) => tmp,
-		Err(err) => {
-			println!("{:?}", err);
-			
+		Err(_err) => {
 			return Err(std::io::Error::new(
 			    std::io::ErrorKind::InvalidInput,
 			    "ERROR : WMIError thrown (Processors Datas Query).",
