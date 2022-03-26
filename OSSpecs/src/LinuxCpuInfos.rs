@@ -171,8 +171,6 @@ pub fn getProcessorsInformationsLinux() -> Result<Linux_Processor, Box<dyn std::
 			lineTemp.remove(0);
 		}
 		
-		println!("{:?}", lineTemp);
-		
 		arrTemp.push(lineTemp);
 	}
 	
