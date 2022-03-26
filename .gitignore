@@ -9,3 +9,7 @@ OSSpecs_tests/target/
 OSSpecs/Cargo.lock
 
 OSSpecs_tests/Cargo.lock
+
+*.txt
+*.o
+*.exe
