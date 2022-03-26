@@ -13,3 +13,5 @@ OSSpecs_tests/Cargo.lock
 *.txt
 *.o
 *.exe
+*.rar
+*.cpp

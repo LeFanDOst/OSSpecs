@@ -17,6 +17,8 @@ Une petite crate Rust pour l'implémentation de certaines fonctionnalités utile
 
 * [Sources](#sources)
 
+# Sources
+
 These few sources were a good help for this crate's development.
 
 * [Struct std::process::Command](https://doc.rust-lang.org/std/process/struct.Command.html)
