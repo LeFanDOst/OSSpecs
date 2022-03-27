@@ -6,7 +6,21 @@ A little Rust crate for implementation of some cross-platform useful functionali
 
 # Summary
 
+* [Purpose](#purpose)
+* [Warning](#warning)
 * [Sources](#sources)
+
+# Purpose
+
+The purpose of this crate is to be able to use features that are implemented differently or not at all
+depending on the operating system. This in a harmonized way, in a single Rust crate.
+
+# Warning
+
+To get CPU's information on Linux, this crate execute a specific command, which is `lscpu`. This command is already
+pre-installed on a lot of Linux distribution. But, in case if it is not found, you can [visit this site](https://www.golinuxcloud.com/lscpu-command-in-linux/#:~:text=lscpu%20is%20a%20command%2Dline,Memory%20Access%20(NUMA)%20nodes.)
+to get some informations on how install this command. *This warning will probably be removed on a future update of
+the crate.*
 
 # Sources
 

@@ -5,6 +5,17 @@
 use wmi::*;
 use serde::Deserialize;
 
+enum ArchitectureTypeProcessorWin32
+{
+	x86 = 0,
+	MIPS = 1,
+	Alpha = 2,
+	PowerPC = 3,
+	ARM = 5,
+	ia64 = 6,
+	x64 = 9,
+}
+
 #[derive(Deserialize, Debug)]
 pub struct Win32_Processor
 {
@@ -77,6 +88,22 @@ pub struct Win32_Processor
 	pub VMMonitorModeExtensions: bool,
 	#[serde(skip_serializing_if = "Option::is_none")]
 	pub VoltageCaps: Option<u32>,
+}
+
+impl Win32_Processor
+{
+	pub fn ArchitectureToEnumType(self) -> ArchitectureTypeProcessorWin32
+	{
+		return match self.Architecture {
+			0 => ArchitectureTypeProcessorWin32::x86,
+			1 => ArchitectureTypeProcessorWin32::MIPS,
+			2 => ArchitectureTypeProcessorWin32::Alpha,
+			3 => ArchitectureTypeProcessorWin32::PowerPC,
+			5 => ArchitectureTypeProcessorWin32::ARM,
+			6 => ArchitectureTypeProcessorWin32::ia64,
+			9 => ArchitectureTypeProcessorWin32::x64,
+		};
+	}
 }
 
 pub fn getProcessorsInformationsWin32() -> Result<Vec<Win32_Processor>, std::io::Error>

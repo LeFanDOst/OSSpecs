@@ -7,12 +7,21 @@ Une petite crate Rust pour l'implémentation de certaines fonctionnalités utile
 # Sommaire
 
 * [But](#but)
+* [Avertissement](#avertissement)
 * [Sources](#sources)
 
 # But
 
 Cette crate a pour but de pouvoir utiliser des fonctionnalités qui sont implémentées de manière différente ou inexistantes
 selon le système d'exploitation. Cela de manière harmonisée, dans une seule crate Rust.
+
+# Avertissement
+
+Pour récupérer les informations des CPUs sous Linux, cette crate exécute une commande spécifique, qui est `lscpu`. Cette commande
+est déjà pré-installée sur beaucoup de distributions Linux. Mais, dans le cas où cette commande n'est pas trouvée, vous pouvez
+[visiter ce site](https://www.golinuxcloud.com/lscpu-command-in-linux/#:~:text=lscpu%20is%20a%20command%2Dline,Memory%20Access%20(NUMA)%20nodes.) pour avoir
+quelques informations sur comment installer cette commande. *Cet avertissement sera probablement supprimé sur une future mise à jour
+de cette crate.*
 
 # Sources
 
