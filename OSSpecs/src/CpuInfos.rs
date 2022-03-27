@@ -1,10 +1,29 @@
 #![allow(non_snake_case)]
 
-#[cfg(target_os = "windows")]
+//! Get the CPUs's informations.
+//!
+//! This file provides a structure and a function which permit to get some CPUs's informations.
+//!
+//!
+//!
+//!
+//!
+//!
+//!
+//!
+//!
+//!
+//!
+//!
+//!
+//!
+//!
+
+/*#[cfg(target_os = "windows")]
 pub mod WindowsCpuInfos;
 
 #[cfg(target_os = "linux")]
-pub mod LinuxCpuInfos;
+pub mod LinuxCpuInfos;*/
 
 /*
 	Données nécessaires à rajouter à la structure :
