@@ -5,7 +5,7 @@
 use wmi::*;
 use serde::Deserialize;
 
-enum ArchitectureTypeProcessorWin32
+pub enum ArchitectureTypeProcessorWin32
 {
 	x86 = 0,
 	MIPS = 1,
@@ -14,6 +14,7 @@ enum ArchitectureTypeProcessorWin32
 	ARM = 5,
 	ia64 = 6,
 	x64 = 9,
+	Unknown,
 }
 
 #[derive(Deserialize, Debug)]
@@ -102,6 +103,7 @@ impl Win32_Processor
 			5 => ArchitectureTypeProcessorWin32::ARM,
 			6 => ArchitectureTypeProcessorWin32::ia64,
 			9 => ArchitectureTypeProcessorWin32::x64,
+			_ => ArchitectureTypeProcessorWin32::Unknown,
 		};
 	}
 }

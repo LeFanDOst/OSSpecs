@@ -6,6 +6,136 @@ use std::process::Command;
 
 use std::fmt;
 
+#[derive(Clone)]
+pub struct Linux_Processors_FewDetails
+{
+	pub CPU: u32,
+	pub NODE: u32,
+	pub SOCKET: u32,
+	pub CORE: u32,
+	pub L1d_L1i_L2_L3: String,
+	pub ONLINE: bool,
+}
+
+impl fmt::Debug for Linux_Processors_FewDetails
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
+	{
+        write!(
+			f,
+			"[Linux_Processors_FewDetails : \n
+			CPU: {:?} \n
+			NODE: {:?} \n
+			SOCKET: {:?} \n
+			CORE: {:?} \n
+			L1d:L1i:L2:L3: {:?} \n
+			ONLINE: {:?} \n
+			]",
+			self.CPU,
+			self.NODE,
+			self.SOCKET,
+			self.CORE,
+			self.L1d_L1i_L2_L3,
+			self.ONLINE,
+		)
+    }
+}
+
+impl Linux_Processors_FewDetails
+{
+	pub fn new(CPU: u32, NODE: u32, SOCKET: u32, CORE: u32, L1d_L1i_L2_L3: String, ONLINE: bool) -> Linux_Processors_FewDetails
+	{
+		return Linux_Processors_FewDetails {
+			CPU,
+			NODE,
+			SOCKET,
+			CORE,
+			L1d_L1i_L2_L3,
+			ONLINE,
+		};
+	}
+}
+
+pub fn getFewDetailsOnLinuxProcessors() -> Result<Vec<Linux_Processors_FewDetails>, Box<dyn std::error::Error>>
+{
+	let output = Command::new("sh").arg("-c").arg("lscpu -e").output()?;
+	let lscpuECmd = output.stdout;
+	
+	let lscpuECmdStr = match std::str::from_utf8(lscpuECmd.as_slice()) {
+		Ok(tmp) => tmp,
+		Err(_err) => {
+			return Err(Box::new(std::io::Error::new(
+				std::io::ErrorKind::InvalidInput,
+				"ERROR : UTF8Error thrown (Conversion Processors Datas Into String).",
+			)));
+		},
+	};
+	
+	let cpuInfosEString = String::from(lscpuECmdStr);
+	let mut arrRes : Vec<Linux_Processors_FewDetails> = Vec::new();
+	
+	let mut cmpt : i32 = 0;
+	
+	for line in cpuInfosEString.lines()
+	{
+		if cmpt > 0
+		{
+			let mut lineTemp = String::from(line);
+			
+			let mut updating = lineTemp; // Clear useless whitespaces -- Beginning.
+			let mut tabUpdating : Vec<char> = Vec::new();
+			
+			let mut i : usize = 0;
+			let sizeTemp : usize = updating.len();
+			
+			while i < sizeTemp
+			{
+				tabUpdating.push(updating.remove(0));
+				
+				i += 1;
+			}
+			
+			for i in 0..tabUpdating.len()
+			{
+				if tabUpdating[i] == ' '
+				{
+					if i > 0 && tabUpdating[(i - 1)] != ' '
+					{
+						updating.push(tabUpdating[i]);
+					}
+				}
+				else
+				{
+					updating.push(tabUpdating[i]);
+				}
+			}
+			
+			lineTemp = updating; // Clear useless whitespaces -- Ending.
+			
+			let arrTemp : Vec<&str> = lineTemp.split(' ').collect();
+			
+			arrRes.push(
+				Linux_Processors_FewDetails::new(
+					arrTemp[0].parse::<u32>()?,
+					arrTemp[1].parse::<u32>()?,
+					arrTemp[2].parse::<u32>()?,
+					arrTemp[3].parse::<u32>()?,
+					String::from(arrTemp[4].clone()),
+					if String::from(arrTemp[5].clone()) == String::from("yes") { true } else { false },
+				)
+			);
+		}
+		
+		cmpt += 1;
+	}
+	
+	return Ok(arrRes);
+}
+
+//#[derive(Clone)]
+//#[derive(Copy)]
+//#[derive(Copy, Clone)]
+#[derive(Clone)]
 pub struct Linux_Processor
 {
 	pub Architecture: String,
@@ -29,6 +159,7 @@ pub struct Linux_Processor
 	pub L2_cache: String,
 	pub L3_cache: String,
 	pub NUMA_node0_CPU_s: String,
+	pub FewDetails: Vec<Linux_Processors_FewDetails>,
 }
 
 impl fmt::Debug for Linux_Processor
@@ -59,6 +190,7 @@ impl fmt::Debug for Linux_Processor
 			L2 cache: {:?} \n
 			L3 cache: {:?} \n
 			NUMA node0 CPU(s): {:?} \n
+			Few Details: {:?} \n
 			]",
 			self.Architecture,
 			self.CPU_op_mode_s,
@@ -81,9 +213,20 @@ impl fmt::Debug for Linux_Processor
 			self.L2_cache,
 			self.L3_cache,
 			self.NUMA_node0_CPU_s,
+			self.FewDetails,
 		)
     }
 }
+
+//impl Copy for Linux_Processor {}
+
+/*impl Clone for Linux_Processor
+{
+	fn clone(&self) -> Self
+	{
+		*self
+	}
+}*/
 
 impl Linux_Processor {
     pub fn new(
@@ -108,6 +251,7 @@ impl Linux_Processor {
         L2_cache: String,
         L3_cache: String,
         NUMA_node0_CPU_s: String,
+        FewDetails: Vec<Linux_Processors_FewDetails>,
     ) -> Linux_Processor {
         return Linux_Processor {
             Architecture,
@@ -131,6 +275,7 @@ impl Linux_Processor {
             L2_cache,
             L3_cache,
             NUMA_node0_CPU_s,
+            FewDetails,
         };
     }
 }
@@ -197,6 +342,7 @@ pub fn getProcessorsInformationsLinux() -> Result<Linux_Processor, Box<dyn std::
 			arrTemp[21].clone(),
 			arrTemp[22].clone(),
 			arrTemp[23].clone(),
+			getFewDetailsOnLinuxProcessors()?,
 		)
 	);
 }

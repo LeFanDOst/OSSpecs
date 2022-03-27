@@ -14,17 +14,15 @@ fn main()
 	{
 		println!("We are on a Linux Distribution OS.");
 		
-		let procosInfos = LinuxCpuInfos::getProcessorsInformationsLinux().unwrap();
-		
-		println!("{:?}", procosInfos);
+		#[cfg(target_os = "linux")]
+		println!("{:?}", LinuxCpuInfos::getProcessorsInformationsLinux().unwrap());
 	}
 	else if OSDetection::isWindows()
 	{
 		println!("We are on Windows.");
 		
-		/*let tabProcos = WindowsCpuInfos::getProcessorsInformationsWin32().unwrap();
-		
-		println!("{:?}", tabProcos);*/
+		#[cfg(target_os = "windows")]
+		println!("{:?}", WindowsCpuInfos::getProcessorsInformationsWin32().unwrap());
 	}
 	else if OSDetection::isMacOS()
 	{
