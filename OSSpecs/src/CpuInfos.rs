@@ -1,4 +1,9 @@
 #![allow(non_snake_case)]
+#![warn(rustdoc::broken_intra_doc_links)]
+#![warn(rustdoc::private_intra_doc_links)]
+#![warn(rustdoc::invalid_codeblock_attributes)]
+#![warn(rustdoc::invalid_html_tags)]
+#![warn(rustdoc::bare_urls)]
 
 //! Get the CPUs's informations.
 //!
