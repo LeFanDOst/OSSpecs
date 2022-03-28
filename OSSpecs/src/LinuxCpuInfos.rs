@@ -137,9 +137,6 @@ pub fn getFewDetailsOnLinuxProcessors() -> Result<Vec<Linux_Processors_FewDetail
 	return Ok(arrRes);
 }
 
-//#[derive(Clone)]
-//#[derive(Copy)]
-//#[derive(Copy, Clone)]
 #[derive(Clone)]
 pub struct Linux_Processor
 {
@@ -159,10 +156,10 @@ pub struct Linux_Processor
 	pub CPU_MHz: f32,
 	pub BogoMIPS: f32,
 	pub Virtualization: String,
-	pub L1d_cache: String,
-	pub L1i_cache: String,
-	pub L2_cache: String,
-	pub L3_cache: String,
+	pub L1d_cache: u32,
+	pub L1i_cache: u32,
+	pub L2_cache: u32,
+	pub L3_cache: u32,
 	pub NUMA_node0_CPU_s: String,
 	pub FewDetails: Vec<Linux_Processors_FewDetails>,
 }
@@ -223,16 +220,6 @@ impl fmt::Debug for Linux_Processor
     }
 }
 
-//impl Copy for Linux_Processor {}
-
-/*impl Clone for Linux_Processor
-{
-	fn clone(&self) -> Self
-	{
-		*self
-	}
-}*/
-
 impl Linux_Processor {
     pub fn new(
         Architecture: String,
@@ -251,10 +238,10 @@ impl Linux_Processor {
         CPU_MHz: f32,
         BogoMIPS: f32,
         Virtualization: String,
-        L1d_cache: String,
-        L1i_cache: String,
-        L2_cache: String,
-        L3_cache: String,
+        L1d_cache: u32,
+        L1i_cache: u32,
+        L2_cache: u32,
+        L3_cache: u32,
         NUMA_node0_CPU_s: String,
         FewDetails: Vec<Linux_Processors_FewDetails>,
     ) -> Linux_Processor {
@@ -287,7 +274,7 @@ impl Linux_Processor {
 
 pub fn getProcessorsInformationsLinux() -> Result<Linux_Processor, Box<dyn std::error::Error>>
 {
-	let output = Command::new("sh").arg("-c").arg("lscpu").output()?;
+	let output = Command::new("sh").arg("-c").arg("lscpu -b").output()?;
 	let lscpuCmd = output.stdout;
 	
 	let lscpuCmdStr = match std::str::from_utf8(lscpuCmd.as_slice()) {
@@ -342,10 +329,10 @@ pub fn getProcessorsInformationsLinux() -> Result<Linux_Processor, Box<dyn std::
 			arrTemp[15].parse::<f32>()?,
 			arrTemp[16].parse::<f32>()?,
 			arrTemp[18].clone(),
-			arrTemp[19].clone(),
-			arrTemp[20].clone(),
-			arrTemp[21].clone(),
-			arrTemp[22].clone(),
+			arrTemp[19].parse::<u32>()?,
+			arrTemp[20].parse::<u32>()?,
+			arrTemp[21].parse::<u32>()?,
+			arrTemp[22].parse::<u32>()?,
 			arrTemp[23].clone(),
 			getFewDetailsOnLinuxProcessors()?,
 		)

@@ -24,6 +24,8 @@
 //!
 //!
 
+use std::fmt;
+
 /*#[cfg(target_os = "windows")]
 pub mod WindowsCpuInfos;
 
@@ -37,7 +39,6 @@ pub mod LinuxCpuInfos;*/
 	
 	À faire :
 		- Fonction cross-platform (et possédant le même nom entre Windows et Linux) pour accéder à ces informations
-		- Implémenter le FMT pour la structure
 		- Implémenter une fonction "new" pour la structure
 */
 
@@ -47,4 +48,62 @@ pub struct ProcessorsInfos
 	pub Architecture: String,
 	pub CPUsCount: u32,
 	pub CPUFamily: u32,
+	pub NumberOfCoresPerCPU: Vec<u32>,
+	pub TotalNumberOfThreads: u32,
+	pub AvgL1CacheSize: u32,
+	pub AvgL2CacheSize: u32,
+	pub AvgL3CacheSize: u32,
+}
+
+impl fmt::Debug for ProcessorsInfos
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
+	{
+        write!(
+			f,
+			"[ProcessorsInfos : \n
+			Architecture: {:?} \n
+			CPUsCount: {:?} \n
+			CPUFamily: {:?} \n
+			NumberOfCoresPerCPU: {:?} \n
+			TotalNumberOfThreads: {:?} \n
+			AvgL1CacheSize: {:?} \n
+			AvgL2CacheSize: {:?} \n
+			AvgL3CacheSize: {:?} \n
+			]",
+			self.Architecture,
+			self.CPUsCount,
+			self.CPUFamily,
+			self.NumberOfCoresPerCPU,
+			self.TotalNumberOfThreads,
+			self.AvgL1CacheSize,
+			self.AvgL2CacheSize,
+			self.AvgL3CacheSize,
+		)
+    }
+}
+
+impl ProcessorsInfos
+{
+	pub fn new(
+		Architecture: String,
+		CPUsCount: u32,
+		CPUFamily: u32,
+		NumberOfCoresPerCPU: Vec<u32>,
+		TotalNumberOfThreads: u32,
+		AvgL1CacheSize: u32,
+		AvgL2CacheSize: u32,
+		AvgL3CacheSize: u32,
+	) -> ProcessorsInfos {
+		return ProcessorsInfos {
+			Architecture,
+			CPUsCount,
+			CPUFamily,
+			NumberOfCoresPerCPU,
+			TotalNumberOfThreads,
+			AvgL1CacheSize,
+			AvgL2CacheSize,
+			AvgL3CacheSize,
+		};
+	}
 }

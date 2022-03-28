@@ -22,7 +22,7 @@ pub enum ArchitectureTypeProcessorWin32
 	Unknown,
 }
 
-#[derive(Deserialize, Debug, Clone)]
+#[derive(Deserialize, Debug)]
 pub struct Win32_Processor
 {
 	pub AddressWidth: u16,
